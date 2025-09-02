@@ -1,10 +1,20 @@
 class Solution {
     public String encode(List<String> strs) {
+        if(strs.isEmpty())
+            return null;
         String output = "";
+
+        if(strs.size() < 100)
+            output += "0";
+        if(strs.size() < 10)
+            output += "0";
+        output += strs.size();
+        output += "#";
+
         for(String s : strs)
         {
-            output += "#";
             output += s.length();
+            output += "#";
             output += s;
         }
         return output;
@@ -12,33 +22,42 @@ class Solution {
 
     public List<String> decode(String str) {
         ArrayList<String> strs = new ArrayList<>();
-        //System.out.println(str);
+        System.out.println(str);
 
-        int letterCount = 0;
-        String currentWord = "";
-        for(int i = 0; i < str.length(); i++)
+        if(str == null)
+            return strs;
+
+        String wordCountStr = "";
+        int wordCount = 0;
+        for(int i = 0; i < 3; i++)
         {
-            char c = str.charAt(i);
-            //System.out.println(c);
-            if(c == '#' && currentWord != "")
-            {
-                //System.out.println("test 1");
-                strs.add(currentWord);
-                currentWord = "";
-            }
-            else if (c >= '0' && c <= '9')
-            {
-                //System.out.println("test 2");
-                letterCount = c;
-            }
-            else if(c != '#')
-            {
-                //System.out.println("test 3");
-                currentWord += c;
-            }
+            wordCountStr += str.charAt(i);
         }
-        if(currentWord != "")
+        wordCount = Integer.parseInt(wordCountStr);
+        str = str.substring(4);
+        System.out.println(str);
+
+        int index = 0;
+        for(int i = 0; i < wordCount; i++)
+        {
+            String letterCountStr = "";
+            int letterCount = 0;
+            while(Character.isDigit(str.charAt(index)))
+            {
+                letterCountStr += str.charAt(index);
+                index++;
+            }
+            index++;
+            letterCount = Integer.parseInt(letterCountStr);
+            String currentWord = "";
+            for(int j = 0; j < letterCount; j++)
+            {
+                currentWord += str.charAt(index);
+                index++;
+            }
             strs.add(currentWord);
+        }
+        
         return strs;
     }
 }
