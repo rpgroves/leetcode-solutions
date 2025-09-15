@@ -1,53 +1,33 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        //-2, 0, 1, 1, 2
-        //-2 + 0 + 2 = 2 passes
-        //
-
         Arrays.sort(nums);
 
         List<List<Integer>> retList = new ArrayList<>();
 
         for(int i = 0; i < nums.length - 2; i++)
         {   
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
             int j = i + 1;
             int k = nums.length - 1;
-            int currentSum = nums[i] + (nums[j] + nums[k]);
-            while(true)
-            {
-                if(currentSum < 0)
-                {
-                    if(j >= nums.length - 2)
-                        break;
-                    else
-                    {
-                        if(j + 1 != k)
-                            j++;
-                        else
-                            break;
-                    }
-                }
-                if(currentSum > 0)
-                {
-                    if(k <= i + 1)
-                        break;
-                    else
-                    {
-                        if(k - 1 != j)
-                            k--;
-                        else
-                            break;
-                    }
-                }
-                currentSum = nums[i] + (nums[j] + nums[k]);
 
-                if(currentSum == 0)
+            while(j < k)
+            {
+                int sum = nums[i] + nums[j] + nums[k];
+                if(sum == 0)
                 {
-                    List<Integer> currentTriplet = Arrays.asList(nums[i], nums[j], nums[k]);
-                    if(!retList.contains(currentTriplet))
-                        retList.add(currentTriplet);
+                    retList.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    j++;
+                    k--;
+                    while (j < k && nums[j] == nums[j - 1]) j++;
+                    while (j < k && nums[k] == nums[k + 1]) k--;
+                } 
+                else if (sum < 0) {
+                    j++;
+                } 
+                else {
+                    k--;
                 }
-            }            
+            }
         }
 
         return retList;
