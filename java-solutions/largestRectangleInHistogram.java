@@ -3,24 +3,32 @@ class Solution {
         Stack<Integer> stack = new Stack<>();
         int max = -1;
 
-        for(int i = 0; i < heights.length; i++)
+        for(int i = 0; i <= heights.length; i++)
         {
-            int height = heights[i];
-            if(stack.isEmpty())
+            int height = -1;
+            if(i != heights.length)
+                height = heights[i];
+            else height = 0;
+            if(height > max)
+                max = height;
+            if(i != heights.length && stack.isEmpty())
             {
                 stack.push(i);
                 continue;
             }
-            if(height < stack.peek())
-                stack.push(i);
-            if(height >= stack.peek())
+            while(!stack.isEmpty() && height < heights[stack.peek()])
             {
                 int pop = stack.pop();
-                int area = i - pop * heights[pop];
+                int area = -1;
+                if(stack.isEmpty())
+                    area = (i) * heights[pop];
+                else
+                    area = (i - stack.peek() - 1) * heights[pop];
                 if(area > max)
                     max = area;
-                stack.push(i);
+                
             }
+            stack.push(i);
         }
         return max;
     }
